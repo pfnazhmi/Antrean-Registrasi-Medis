@@ -1,15 +1,28 @@
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
+import threading
+
+class RequestHandler(SimpleXMLRPCRequestHandler):
+    rpc_paths = ('/RPC2',)
+
+class ServerThread(threading.Thread):
+    def __init__(self, server):
+        threading.Thread.__init__(self)
+        self.server = server
+
+    def run(self):
+        print("Server sedang berjalan...")
+        self.server.serve_forever()
 
 class KlinikTelkomedika:
     def __init__(self):
         self.klinik_data = {
-            'Poli_Gigi': {'antrian': [], 'waktu_tunggu': 0},
-            'Poli_Umum': {'antrian': [], 'waktu_tunggu': 0},
-            'Poli_THT': {'antrian': [], 'waktu_tunggu': 0},
+            'Poli Gigi': {'antrian': [], 'waktu_tunggu': 0},
+            'Poli Umum': {'antrian': [], 'waktu_tunggu': 0},
+            'Poli THT': {'antrian': [], 'waktu_tunggu': 0},
         }
 
-    def daftar_poli(self):
+    def lihat_poli(self):
         return list(self.klinik_data.keys())
 
     def daftar_antrian(self, klinik):
@@ -29,10 +42,6 @@ class KlinikTelkomedika:
         pasien_data = self.klinik_data[klinik]['antrian'][nomor_antrean - 1]['pasien']
         return pasien_data
 
-# Akses RPC hanya untuk localhost
-class RequestHandler(SimpleXMLRPCRequestHandler):
-    rpc_paths = ('/RPC2',)
-
 def main():
     server = SimpleXMLRPCServer(('localhost', 8000), requestHandler=RequestHandler)
     server.register_introspection_functions()
@@ -40,8 +49,8 @@ def main():
     rumah_sakit = KlinikTelkomedika()
     server.register_instance(rumah_sakit)
 
-    print("Server sedang berjalan...")
-    server.serve_forever()
+    server_thread = ServerThread(server)
+    server_thread.start()
 
 if __name__ == "__main__":
     main()
