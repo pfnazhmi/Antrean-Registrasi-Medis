@@ -69,9 +69,9 @@ class AntreanMedisGUI:
 
     def lihat_poli(self):
         try:
-            klinik_list = self.server.lihat_poli()
-            poli_str = "\n".join([f"{i}. {klinik}" for i, klinik in enumerate(klinik_list, 1)])
-            messagebox.showinfo("Daftar Poli", f"Daftar Poli di Telkomedika:\n{poli_str}")
+            klinik_info = self.server.lihat_poli()
+            poli_str = "\n".join([f"{klinik}: {status}" for klinik, status in klinik_info])
+            messagebox.showinfo("Info Poli", f"Informasi Poli di Telkomedika:\n{poli_str}")
         except Exception as e:
             messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
 
