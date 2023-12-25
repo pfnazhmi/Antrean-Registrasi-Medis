@@ -32,7 +32,7 @@ class AntreanMedisGUI:
             font=self.font_style)
         self.label_klinik.pack()
 
-        klinik_list = self.server.lihat_poli()
+        klinik_list = [f"{klinik} ({status})" for klinik, status in self.server.lihat_poli()]
         self.selected_klinik.set(klinik_list[0])
 
         self.option_menu_klinik = tk.OptionMenu(
@@ -77,45 +77,59 @@ class AntreanMedisGUI:
 
     def lihat_antrian(self):
         klinik = self.selected_klinik.get()
-        if klinik:
+        clinic_name = klinik.split(' (')[0]
+        status = klinik.split(' (')[1].rstrip(')')
+        if clinic_name and status == 'Buka':
             try:
-                antrian = self.server.daftar_antrian(klinik)
-                waktu_tunggu = self.server.daftar_waktu_tunggu(klinik)
+                antrian = self.server.daftar_antrian(clinic_name)
+                waktu_tunggu = self.server.daftar_waktu_tunggu(clinic_name)
                 if not antrian:
-                    messagebox.showinfo("Antrian", f'Tidak ada antrian di {klinik}')
+                    messagebox.showinfo("Antrian", f'Tidak ada antrian di {clinic_name}')
                 else:
                     antrian_str = "\n".join([f"{data['nomor_antrean']}. {data['pasien']['nama']}" for data in antrian])
-                    messagebox.showinfo("Antrian", f'Antrian {klinik}:\n{antrian_str}\nWaktu Tunggu: {waktu_tunggu} menit')
+                    messagebox.showinfo("Antrian", f'Antrian {clinic_name}:\n{antrian_str}\nWaktu Tunggu: {waktu_tunggu} menit')
             except Exception as e:
                 messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
+        else:
+            messagebox.showerror("Antrian", f'Klinik sudah tutup')
 
     def mendaftar(self):
         try:
             klinik = self.selected_klinik.get()
-            if klinik:
+            clinic_name = klinik.split(' (')[0]
+            status = klinik.split(' (')[1].rstrip(')')
+            if klinik and status == 'Buka':
                 nomor_rekam_medis = simpledialog.askstring("Nomor Rekam Medis", "Masukkan nomor rekam medis:")
                 nama = simpledialog.askstring("Nama", "Masukkan nama:")
                 tanggal_lahir = simpledialog.askstring("Tanggal Lahir", "Masukkan tanggal lahir (YYYY-MM-DD):")
 
                 if nomor_rekam_medis and nama and tanggal_lahir:
                     nomor_antrean, waktu_tunggu = self.server.tambah_antrian(
-                        klinik,
+                        clinic_name,
                         {'nomor_rekam_medis': nomor_rekam_medis, 'nama': nama, 'tanggal_lahir': datetime.strptime(tanggal_lahir, '%Y-%m-%d')})
                     
-                    messagebox.showinfo("Mendaftar", f'Anda telah mendaftar di {klinik}. Nomor Antrean: {nomor_antrean}\nPerkiraan waktu tunggu: {waktu_tunggu} menit')
+                    messagebox.showinfo("Mendaftar", f'Anda telah mendaftar di {clinic_name}. Nomor Antrean: {nomor_antrean}\nPerkiraan waktu tunggu: {waktu_tunggu} menit')
+            else :
+                messagebox.showerror("Mendaftar", f'Klinik Sudah Tutup')
+
         except Exception as e:
             messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
 
     def lihat_data(self):
         klinik = self.selected_klinik.get()
+        clinic_name = klinik.split(' (')[0]
+        status = klinik.split(' (')[1].rstrip(')')
         nomor_antrean = simpledialog.askinteger("Masukkan Nomor Antrean", "Masukkan nomor antrean:")
 
-        if klinik and nomor_antrean:
+        if clinic_name and nomor_antrean and status =='Buka':
             try:
-                pasien_data = self.server.lihat_data_pasien(klinik, nomor_antrean)
+                pasien_data = self.server.lihat_data_pasien(clinic_name, nomor_antrean)
                 messagebox.showinfo("Data Pasien", f'Data Pasien:\n{pasien_data}')
             except Exception as e:
                 messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
+        else:
+            messagebox.showerror("Mendaftar", f'Klinik Sudah Tutup')
+
 
 if __name__ == "__main__":
     root = tk.Tk()
