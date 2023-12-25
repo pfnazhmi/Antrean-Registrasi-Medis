@@ -120,16 +120,18 @@ class AntreanMedisGUI:
         klinik = self.selected_klinik.get()
         clinic_name = klinik.split(' (')[0]
         status = klinik.split(' (')[1].rstrip(')')
-        nomor_antrean = simpledialog.askinteger("Masukkan Nomor Antrean", "Masukkan nomor antrean:")
 
-        if clinic_name and nomor_antrean and status =='Buka':
-            try:
-                pasien_data = self.server.lihat_data_pasien(clinic_name, nomor_antrean)
-                messagebox.showinfo("Data Pasien", f'Data Pasien:\n{pasien_data}')
-            except Exception as e:
-                messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
-        else:
+        if status == 'Tutup':
             messagebox.showerror("Mendaftar", f'Klinik Sudah Tutup')
+        elif clinic_name and status =='Buka':
+            nomor_antrean = simpledialog.askinteger("Masukkan Nomor Antrean", "Masukkan nomor antrean:")
+            if nomor_antrean:
+                try:
+                    pasien_data = self.server.lihat_data_pasien(clinic_name, nomor_antrean)
+                    messagebox.showinfo("Data Pasien", f'Data Pasien:\n{pasien_data}')
+                except Exception as e:
+                    messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
+        
 
 
 if __name__ == "__main__":
