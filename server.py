@@ -9,7 +9,6 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
 class ServerThread(threading.Thread):
-
     #Konstruktor menerima objek server sebagai parameter dan menyimpan objek server 
     def __init__(self, server):
         threading.Thread.__init__(self)
@@ -29,6 +28,7 @@ class KlinikTelkomedika:
             'Poli Gigi': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('08:00', '%H:%M'), 'tutup_jam': datetime.strptime('16:00', '%H:%M')},
             'Poli Umum': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('06:00', '%H:%M'), 'tutup_jam': datetime.strptime('20:00', '%H:%M')},
             'Poli THT': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('07:00', '%H:%M'), 'tutup_jam': datetime.strptime('17:00', '%H:%M')},
+            'Poli Bidan': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('00:00', '%H:%M'), 'tutup_jam': datetime.strptime('23:59', '%H:%M')},
         }
 
     # method untuk informasi data klinik berupa klinik dan status (buka/tutup)
@@ -76,8 +76,8 @@ def main():
     server = SimpleXMLRPCServer(('localhost', 8000), requestHandler=RequestHandler)
     server.register_introspection_functions()
 
-    rumah_sakit = KlinikTelkomedika()
-    server.register_instance(rumah_sakit)
+    _klinikTelkomedika = KlinikTelkomedika()
+    server.register_instance(_klinikTelkomedika)
 
     server_thread = ServerThread(server)
     server_thread.start()
