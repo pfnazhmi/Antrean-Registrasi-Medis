@@ -6,11 +6,9 @@ class AntreanMedisGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("Antrean Medis Telkomedika")
-
-
+    
         self.server = ServerProxy('http://localhost:8000')
         self.selected_klinik = tk.StringVar(self.master)
-
         self.create_widgets()
 
     def create_widgets(self):
@@ -41,26 +39,25 @@ class AntreanMedisGUI:
             self.selected_klinik, 
             *klinik_list)
         self.option_menu_klinik.config(font=self.font_style)
-        self.option_menu_klinik.pack()
-        self.label.pack(pady=10)
+        self.option_menu_klinik.pack(pady=10)
 
         self.button_lihat_antrian = tk.Button(
             self.master, text="Lihat Antrian", 
             command=self.lihat_antrian,
             **button_style)
-        self.button_lihat_antrian.pack()
+        self.button_lihat_antrian.pack(pady=5)
 
         self.button_mendaftar = tk.Button(
             self.master, text="Mendaftar", 
             command=self.mendaftar, 
             **button_style)
-        self.button_mendaftar.pack()
+        self.button_mendaftar.pack(padx=5)
 
         self.button_lihat_data = tk.Button(
             self.master, text="Lihat Data Pasien", 
             command=self.lihat_data,
             **button_style)
-        self.button_lihat_data.pack()
+        self.button_lihat_data.pack(padx=5)
 
         self.button_exit = tk.Button(
             self.master, text="Keluar", 
@@ -93,8 +90,7 @@ class AntreanMedisGUI:
 
     def mendaftar(self):
         try:
-            klinik_list = self.server.lihat_poli()
-            klinik = simpledialog.askstring("Pilih Klinik", "Pilih klinik:", initialvalue=klinik_list[0], parent=self.master)
+            klinik = self.selected_klinik.get()
             if klinik:
                 nomor_rekam_medis = simpledialog.askstring("Nomor Rekam Medis", "Masukkan nomor rekam medis:")
                 nama = simpledialog.askstring("Nama", "Masukkan nama:")
