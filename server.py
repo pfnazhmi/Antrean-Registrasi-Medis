@@ -58,6 +58,7 @@ class KlinikTelkomedika:
         return pasien_data
 
 def main():
+    #server = SimpleXMLRPCServer(('http://192.168.18.87:8000'), requestHandler=RequestHandler)
     server = SimpleXMLRPCServer(('localhost', 8000), requestHandler=RequestHandler)
     server.register_introspection_functions()
 
