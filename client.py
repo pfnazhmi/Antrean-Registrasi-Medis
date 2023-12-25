@@ -13,7 +13,7 @@ class AntreanMedisGUI:
 
         # self.server = ServerProxy('http://192.168.18.87:8000')
         # self.selected_klinik = tk.StringVar(self.master)
-        self.server = ServerProxy('192.168.18.87','8000')
+        self.server = ServerProxy('http://localhost:8000')
         self.selected_klinik = tk.StringVar(self.master)
 
         self.create_widgets()
