@@ -98,7 +98,9 @@ class AntreanMedisGUI:
             klinik = self.selected_klinik.get()
             clinic_name = klinik.split(' (')[0]
             status = klinik.split(' (')[1].rstrip(')')
-            if klinik and status == 'Buka':
+            if status == 'Tutup' :
+                messagebox.showerror("Mendaftar", f'Klinik Sudah Tutup')
+            elif klinik and status == 'Buka':
                 nomor_rekam_medis = simpledialog.askstring("Nomor Rekam Medis", "Masukkan nomor rekam medis:")
                 nama = simpledialog.askstring("Nama", "Masukkan nama:")
                 tanggal_lahir = simpledialog.askstring("Tanggal Lahir", "Masukkan tanggal lahir (YYYY-MM-DD):")
@@ -109,8 +111,7 @@ class AntreanMedisGUI:
                         {'nomor_rekam_medis': nomor_rekam_medis, 'nama': nama, 'tanggal_lahir': datetime.strptime(tanggal_lahir, '%Y-%m-%d')})
                     
                     messagebox.showinfo("Mendaftar", f'Anda telah mendaftar di {clinic_name}. Nomor Antrean: {nomor_antrean}\nPerkiraan waktu tunggu: {waktu_tunggu} menit')
-            else :
-                messagebox.showerror("Mendaftar", f'Klinik Sudah Tutup')
+            
 
         except Exception as e:
             messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
