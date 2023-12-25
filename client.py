@@ -6,38 +6,47 @@ class AntreanMedisGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("Antrean Medis Telkomedika")
-        
+
+        # Set font untuk seluruh GUI
+        self.font_style = ("Poppins", 12)
+
         self.server = ServerProxy('http://localhost:8000')
         self.selected_klinik = tk.StringVar(self.master)
-        
+
         self.create_widgets()
 
     def create_widgets(self):
-        self.label = tk.Label(self.master, text="Selamat Datang di Antrean Medis Telkomedika")
+        # Gaya untuk tombol
+        button_style = {'padx': 10, 'pady': 5, 'font': self.font_style}
+
+        self.label = tk.Label(self.master, text="Selamat Datang di Antrean Medis Telkomedika", font=self.font_style)
         self.label.pack(pady=10)
 
-        self.button_poli = tk.Button(self.master, text="Lihat Poli", command=self.lihat_poli)
+        self.button_poli = tk.Button(self.master, text="Lihat Poli", command=self.lihat_poli, **button_style)
         self.button_poli.pack()
 
-        self.label_klinik = tk.Label(self.master, text="Pilih Klinik:")
+        self.label_klinik = tk.Label(self.master, text="Pilih Klinik:", font=self.font_style)
         self.label_klinik.pack()
 
         klinik_list = self.server.lihat_poli()
         self.selected_klinik.set(klinik_list[0])
 
         self.option_menu_klinik = tk.OptionMenu(self.master, self.selected_klinik, *klinik_list)
+        self.option_menu_klinik.config(font=self.font_style)
         self.option_menu_klinik.pack()
+        self.label.pack(pady=10)
 
-        self.button_lihat_antrian = tk.Button(self.master, text="Lihat Antrian", command=self.lihat_antrian)
+        self.button_lihat_antrian = tk.Button(self.master, text="Lihat Antrian", command=self.lihat_antrian, **button_style)
         self.button_lihat_antrian.pack()
 
-        self.button_mendaftar = tk.Button(self.master, text="Mendaftar", command=self.mendaftar)
+        self.button_mendaftar = tk.Button(self.master, text="Mendaftar", command=self.mendaftar, **button_style)
         self.button_mendaftar.pack()
 
-        self.button_lihat_data = tk.Button(self.master, text="Lihat Data Pasien", command=self.lihat_data)
+        self.button_lihat_data = tk.Button(self.master, text="Lihat Data Pasien", command=self.lihat_data, **button_style)
         self.button_lihat_data.pack()
 
-        self.button_exit = tk.Button(self.master, text="Keluar", command=self.master.destroy)
+        # Mengganti warna tombol keluar menjadi merah
+        self.button_exit = tk.Button(self.master, text="Keluar", command=self.master.destroy, bg='red', fg='white', **button_style)
         self.button_exit.pack(pady=10)
 
     def lihat_poli(self):
