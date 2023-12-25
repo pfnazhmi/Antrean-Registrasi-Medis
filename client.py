@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 from xmlrpc.client import ServerProxy
+from datetime import datetime
 
 class AntreanMedisGUI:
     def __init__(self, master):
@@ -99,8 +100,8 @@ class AntreanMedisGUI:
                 if nomor_rekam_medis and nama and tanggal_lahir:
                     nomor_antrean, waktu_tunggu = self.server.tambah_antrian(
                         klinik,
-                        {'nomor_rekam_medis': nomor_rekam_medis, 'nama': nama, 'tanggal_lahir': tanggal_lahir}
-                    )
+                        {'nomor_rekam_medis': nomor_rekam_medis, 'nama': nama, 'tanggal_lahir': datetime.strptime(tanggal_lahir, '%Y-%m-%d')})
+                    
                     messagebox.showinfo("Mendaftar", f'Anda telah mendaftar di {klinik}. Nomor Antrean: {nomor_antrean}\nPerkiraan waktu tunggu: {waktu_tunggu} menit')
         except Exception as e:
             messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
