@@ -129,8 +129,7 @@ class AntreanMedisGUI:
                         clinic_name,
                         {'nomor_rekam_medis': nomor_rekam_medis, 'nama': nama, 'tanggal_lahir': datetime.strptime(tanggal_lahir, '%Y-%m-%d')})
                     
-                    messagebox.showinfo("Mendaftar", f'Anda telah mendaftar di {clinic_name}. Nomor Antrean: {nomor_antrean}\nPerkiraan waktu tunggu: {waktu_tunggu} menit')
-            
+                    messagebox.showinfo("Mendaftar", f'Anda telah mendaftar di {clinic_name}. Nomor Antrean: {nomor_antrean}\nPerkiraan waktu tunggu: {waktu_tunggu} menit')   
 
         except Exception as e:
             messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
@@ -151,8 +150,6 @@ class AntreanMedisGUI:
                     messagebox.showinfo("Data Pasien", f'Data Pasien:\n{pasien_data}')
                 except Exception as e:
                     messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
-        
-
 
 if __name__ == "__main__":
     root = tk.Tk()
