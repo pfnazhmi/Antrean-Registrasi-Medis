@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox, simpledialog
 from xmlrpc.client import ServerProxy
 from datetime import datetime
+import threading
 
 # membuat class Antrean Medis GUI
 class AntreanMedisGUI:
@@ -11,9 +12,8 @@ class AntreanMedisGUI:
         self.master = master
         self.master.title("Antrean Medis Telkomedika")
 
-        # self.server = ServerProxy('http://192.168.18.87:8000')
-        # self.selected_klinik = tk.StringVar(self.master)
-        self.server = ServerProxy('http://localhost:8000')
+        #self.server = ServerProxy('http://localhost:8000')
+        self.server = ServerProxy('http://192.168.100.120:8000')
         self.selected_klinik = tk.StringVar(self.master)
 
         self.create_widgets()
@@ -151,7 +151,12 @@ class AntreanMedisGUI:
                 except Exception as e:
                     messagebox.showerror("Kesalahan", f"Terjadi kesalahan: {e}")
 
-if __name__ == "__main__":
+def client_thread():
     root = tk.Tk()
     app = AntreanMedisGUI(root)
     root.mainloop()
+
+if __name__ == "__main__":
+    # Jalankan fungsi client_thread() dalam thread terpisah
+    client_thread = threading.Thread(target=client_thread)
+    client_thread.start()

@@ -25,7 +25,7 @@ class KlinikTelkomedika:
     #Inisialisasi klinik_data sebagai kamus (dictionary) yang berisi informasi poli-poli di klinik
     def __init__(self):
         self.klinik_data = {
-            'Poli Gigi': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('08:00', '%H:%M'), 'tutup_jam': datetime.strptime('16:00', '%H:%M')},
+            'Poli Gigi': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('08:00', '%H:%M'), 'tutup_jam': datetime.strptime('12:00', '%H:%M')},
             'Poli Umum': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('06:00', '%H:%M'), 'tutup_jam': datetime.strptime('20:00', '%H:%M')},
             'Poli THT': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('07:00', '%H:%M'), 'tutup_jam': datetime.strptime('17:00', '%H:%M')},
             'Poli Bidan': {'antrian': [], 'waktu_tunggu': 0,'buka_jam': datetime.strptime('00:00', '%H:%M'), 'tutup_jam': datetime.strptime('23:59', '%H:%M')},
@@ -72,8 +72,8 @@ class KlinikTelkomedika:
 
 # menjalankan server
 def main():
-    #server = SimpleXMLRPCServer(('http://192.168.18.87:8000'), requestHandler=RequestHandler)
-    server = SimpleXMLRPCServer(('localhost', 8000), requestHandler=RequestHandler)
+    server = SimpleXMLRPCServer(('192.168.100.120',8000), requestHandler=RequestHandler)
+    #server = SimpleXMLRPCServer(('localhost', 8000), requestHandler=RequestHandler)
     server.register_introspection_functions()
 
     _klinikTelkomedika = KlinikTelkomedika()
