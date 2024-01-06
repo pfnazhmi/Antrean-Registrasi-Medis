@@ -14,7 +14,8 @@ class ServerThread(threading.Thread):
         threading.Thread.__init__(self)
         self.server = server
 
-    #Override dari metode run pada kelas induk (Thread) dan menampilkan pesan bahwa server sedang berjalan memulai server XML-RPC dengan memanggil serve_forever pada objek server.
+    #Override dari metode run pada kelas induk (Thread) 
+    #dan menampilkan pesan bahwa server sedang berjalan memulai server XML-RPC dengan memanggil serve_forever pada objek server.
     def run(self):
         print("Server sedang berjalan...")
         self.server.serve_forever()
@@ -72,10 +73,11 @@ class KlinikTelkomedika:
 
 # menjalankan server
 def main():
-    server = SimpleXMLRPCServer(('192.168.100.120',8000), requestHandler=RequestHandler)
+    server = SimpleXMLRPCServer(('192.168.29.122',8000), requestHandler=RequestHandler)
     #server = SimpleXMLRPCServer(('localhost', 8000), requestHandler=RequestHandler)
     server.register_introspection_functions()
 
+    #Inisialisasi Objek KlinikTelkomedika dan Pendaftaran Instance ke Server
     _klinikTelkomedika = KlinikTelkomedika()
     server.register_instance(_klinikTelkomedika)
 
